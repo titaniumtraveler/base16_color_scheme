@@ -62,7 +62,7 @@ impl Content for Scheme {
         match TemplateField::parse_field(name) {
             SchemeName => encoder.write_escaped(self.scheme_name()).map(|_| true),
             SchemeAuthor => encoder.write_escaped(self.scheme_author()).map(|_| true),
-            SchemeSlug => encoder.write_escaped(&self.scheme_slug()).map(|_| true),
+            SchemeSlug => encoder.write_escaped(self.scheme_slug()).map(|_| true),
             ColorField(color_field) => match self.color(color_field) {
                 Some(value) => value.render_escaped(encoder).map(|_| true),
                 None => Ok(false),
@@ -87,7 +87,7 @@ impl Content for Scheme {
         match TemplateField::parse_field(name) {
             SchemeName => encoder.write_escaped(self.scheme_name()).map(|_| true),
             SchemeAuthor => encoder.write_escaped(self.scheme_author()).map(|_| true),
-            SchemeSlug => encoder.write_escaped(&self.scheme_slug()).map(|_| true),
+            SchemeSlug => encoder.write_escaped(self.scheme_slug()).map(|_| true),
             ColorField(field_spec) => match self.color(field_spec) {
                 Some(value) => value.render_inverse(section, encoder).map(|_| true),
                 None => Ok(false),
