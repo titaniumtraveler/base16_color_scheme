@@ -103,7 +103,7 @@ impl Content for RgbColorFormatter {
             Format {
                 output_format: Dec,
                 output_variant: OutputVariant::B,
-            } => encoder.format_escaped(format_args!("{:.2}", g as f64 / 255.0)),
+            } => encoder.format_escaped(format_args!("{:.2}", b as f64 / 255.0)),
             Format {
                 output_format: Rgb | Dec,
                 output_variant: OutputVariant::Rgb | OutputVariant::Bgr,
