@@ -9,7 +9,7 @@ use nom::{
 use serde::{Deserialize, Serialize};
 use std::str::FromStr;
 
-pub use self::format::{Format, OutputFormat, OutputVariant};
+pub use self::format::{Dec, Format, Hex, Rgb};
 
 mod format;
 
@@ -34,7 +34,6 @@ impl FromStr for ColorField {
 }
 
 fn parse_field(input: &str) -> IResult<&str, (u8, Format)> {
-    use OutputFormat::{Dec, Hex, Rgb};
     let (input, (_, number, _, format)) = tuple((
         tag("base"),
         map_res(take(2usize), |input| -> Result<u8, FromHexError> {
@@ -48,36 +47,27 @@ fn parse_field(input: &str) -> IResult<&str, (u8, Format)> {
         alt((
             tag("hex")
                 .and(alt((
-                    tag("").map(|_| OutputVariant::Rgb),
-                    tag("-r").map(|_| OutputVariant::R),
-                    tag("-g").map(|_| OutputVariant::G),
-                    tag("-b").map(|_| OutputVariant::B),
-                    tag("-bgr").map(|_| OutputVariant::Bgr),
+                    tag("").map(|_| Hex::Rgb),
+                    tag("-r").map(|_| Hex::R),
+                    tag("-g").map(|_| Hex::G),
+                    tag("-b").map(|_| Hex::B),
+                    tag("-bgr").map(|_| Hex::Bgr),
                 )))
-                .map(|(_, output_variant)| Format {
-                    output_format: Hex,
-                    output_variant,
-                }),
+                .map(|(_, hex)| Format::Hex(hex)),
             tag("rgb")
                 .and(alt((
-                    tag("-r").map(|_| OutputVariant::R),
-                    tag("-g").map(|_| OutputVariant::G),
-                    tag("-b").map(|_| OutputVariant::B),
+                    tag("-r").map(|_| Rgb::R),
+                    tag("-g").map(|_| Rgb::G),
+                    tag("-b").map(|_| Rgb::B),
                 )))
-                .map(|(_, output_variant)| Format {
-                    output_format: Rgb,
-                    output_variant,
-                }),
+                .map(|(_, rgb)| Format::Rgb(rgb)),
             tag("dec")
                 .and(alt((
-                    tag("-r").map(|_| OutputVariant::R),
-                    tag("-g").map(|_| OutputVariant::G),
-                    tag("-b").map(|_| OutputVariant::B),
+                    tag("-r").map(|_| Dec::R),
+                    tag("-g").map(|_| Dec::G),
+                    tag("-b").map(|_| Dec::B),
                 )))
-                .map(|(_, output_variant)| Format {
-                    output_format: Dec,
-                    output_variant,
-                }),
+                .map(|(_, dec)| Format::Dec(dec)),
         )),
     ))(input)?;
     Ok((input, (number, format)))
