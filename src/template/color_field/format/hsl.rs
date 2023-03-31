@@ -1,6 +1,5 @@
-use serde::{Deserialize, Serialize};
-
 use crate::scheme::RgbColor;
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize, Clone, Copy, PartialEq, PartialOrd)]
 pub struct HslFormatter {

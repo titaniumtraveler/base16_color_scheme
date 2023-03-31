@@ -28,7 +28,7 @@ impl Display for RgbColorFormatter {
 
             Format::Dec(Dec::R) => write!(f, "{:.2}", r as f64 / 255.0),
             Format::Dec(Dec::G) => write!(f, "{:.2}", g as f64 / 255.0),
-            Format::Dec(Dec::B) => write!(f, "{:.2}", g as f64 / 255.0),
+            Format::Dec(Dec::B) => write!(f, "{:.2}", b as f64 / 255.0),
 
             Format::Hsl(Hsl::H) => write!(f, "{:.2}", HslFormatter::from_color(self.color).hue),
             Format::Hsl(Hsl::L) => {

@@ -25,7 +25,7 @@ impl Scheme {
     }
 
     pub fn scheme_slug(&self) -> &str {
-        &self.scheme
+        "scheme_slug"
     }
 
     pub fn scheme_author(&self) -> &str {
@@ -88,7 +88,7 @@ impl Content for Scheme {
             SchemeName => encoder.write_escaped(self.scheme_name()).map(|_| true),
             SchemeAuthor => encoder.write_escaped(self.scheme_author()).map(|_| true),
             SchemeSlug => encoder.write_escaped(self.scheme_slug()).map(|_| true),
-            ColorField(field_spec) => match self.color(field_spec) {
+            ColorField(color_field) => match self.color(color_field) {
                 Some(value) => value.render_inverse(section, encoder).map(|_| true),
                 None => Ok(false),
             },
