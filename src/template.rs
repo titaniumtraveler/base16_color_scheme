@@ -15,7 +15,7 @@ pub enum TemplateField {
 impl TemplateField {
     pub fn parse_field(name: &str) -> Self {
         match name {
-            "scheme-name" => Self::SchemeName,
+            "scheme-name" | "scheme" => Self::SchemeName,
             "scheme-author" => Self::SchemeAuthor,
             "scheme-slug" => Self::SchemeSlug,
             _ => {
