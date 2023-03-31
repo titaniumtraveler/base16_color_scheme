@@ -9,7 +9,7 @@ use nom::{
 use serde::{Deserialize, Serialize};
 use std::str::FromStr;
 
-pub use self::format::{Dec, Format, Hex, Rgb};
+pub use self::format::{hsl::HslFormatter, Dec, Format, Hex, Hsl, Rgb};
 
 mod format;
 
@@ -68,6 +68,13 @@ fn parse_field(input: &str) -> IResult<&str, (u8, Format)> {
                     tag("-b").map(|_| Dec::B),
                 )))
                 .map(|(_, dec)| Format::Dec(dec)),
+            tag("hsl")
+                .and(alt((
+                    tag("-h").map(|_| Hsl::H),
+                    tag("-s").map(|_| Hsl::S),
+                    tag("-l").map(|_| Hsl::L),
+                )))
+                .map(|(_, hsl)| Format::Hsl(hsl)),
         )),
     ))(input)?;
     Ok((input, (number, format)))

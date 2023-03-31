@@ -1,6 +1,6 @@
 use crate::{
     scheme::rgb_color::RgbColor,
-    template::color_field::{Dec, Format, Hex, Rgb},
+    template::color_field::{Dec, Format, Hex, Hsl, HslFormatter, Rgb},
 };
 use ramhorns::{encoding::Encoder, Content};
 use std::fmt::{self, Display, Formatter};
@@ -29,9 +29,18 @@ impl Display for RgbColorFormatter {
             Format::Dec(Dec::R) => write!(f, "{:.2}", r as f64 / 255.0),
             Format::Dec(Dec::G) => write!(f, "{:.2}", g as f64 / 255.0),
             Format::Dec(Dec::B) => write!(f, "{:.2}", g as f64 / 255.0),
+
+            Format::Hsl(Hsl::H) => write!(f, "{:.2}", HslFormatter::from_color(self.color).hue),
+            Format::Hsl(Hsl::L) => {
+                write!(f, "{:.2}", HslFormatter::from_color(self.color).luminance)
+            }
+            Format::Hsl(Hsl::S) => {
+                write!(f, "{:.2}", HslFormatter::from_color(self.color).saturation)
+            }
         }
     }
 }
+
 impl Content for RgbColorFormatter {
     fn is_truthy(&self) -> bool {
         true
