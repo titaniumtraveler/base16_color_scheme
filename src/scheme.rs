@@ -15,6 +15,7 @@ mod rgb_color;
 pub struct Scheme {
     pub scheme: String,
     pub author: String,
+    pub slug: Option<String>,
     #[serde(flatten)]
     pub colors: BTreeMap<BaseIndex, RgbColor>,
 }
@@ -24,8 +25,13 @@ impl Scheme {
         &self.scheme
     }
 
-    pub fn scheme_slug(&self) -> &str {
-        "scheme_slug"
+    pub fn scheme_slug(&self) -> Option<&str> {
+        self.slug.as_ref().map(|x| x.as_str())
+    }
+
+    pub fn create_slug(mut self) -> Self {
+        self.slug = Some(create_slug(self.scheme_name()));
+        self
     }
 
     pub fn scheme_author(&self) -> &str {
@@ -39,6 +45,16 @@ impl Scheme {
             None
         }
     }
+}
+
+pub fn create_slug(scheme_name: &str) -> String {
+    scheme_name
+        .chars()
+        .flat_map(|c| match c {
+            ' ' => '-'.to_lowercase(),
+            _ => c.to_lowercase(),
+        })
+        .collect()
 }
 
 impl Content for Scheme {
@@ -62,7 +78,13 @@ impl Content for Scheme {
         match TemplateField::parse_field(name) {
             SchemeName => encoder.write_escaped(self.scheme_name()).map(|_| true),
             SchemeAuthor => encoder.write_escaped(self.scheme_author()).map(|_| true),
-            SchemeSlug => encoder.write_escaped(self.scheme_slug()).map(|_| true),
+            SchemeSlug => {
+                if let Some(slug) = self.scheme_slug() {
+                    encoder.write_escaped(slug).map(|_| true)
+                } else {
+                    encoder.write_escaped("scheme_slug").map(|_| true)
+                }
+            }
             ColorField(color_field) => match self.color(color_field) {
                 Some(value) => value.render_escaped(encoder).map(|_| true),
                 None => Ok(false),
@@ -87,7 +109,14 @@ impl Content for Scheme {
         match TemplateField::parse_field(name) {
             SchemeName => encoder.write_escaped(self.scheme_name()).map(|_| true),
             SchemeAuthor => encoder.write_escaped(self.scheme_author()).map(|_| true),
-            SchemeSlug => encoder.write_escaped(self.scheme_slug()).map(|_| true),
+            SchemeSlug => {
+                if let Some(slug) = self.scheme_slug() {
+                    encoder.write_escaped(slug).map(|_| true)
+                } else {
+                    encoder.write_escaped("scheme_slug").map(|_| true)
+                }
+            }
+
             ColorField(color_field) => match self.color(color_field) {
                 Some(value) => value.render_inverse(section, encoder).map(|_| true),
                 None => Ok(false),

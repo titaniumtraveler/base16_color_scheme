@@ -6,7 +6,8 @@ fn main() {
     let scheme_str = read_to_string("examples/scheme.yml").unwrap();
 
     let template = Template::new(template_str).unwrap();
-    let scheme: Scheme = serde_yaml::from_str(&scheme_str).unwrap();
+    let mut scheme: Scheme = serde_yaml::from_str(&scheme_str).unwrap();
+    scheme = scheme.create_slug();
 
     println!("{}", template.render(&scheme));
 }
