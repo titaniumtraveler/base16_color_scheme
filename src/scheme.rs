@@ -1,12 +1,12 @@
-use crate::{
-    scheme::rgb_color::RgbColorFormatter,
-    template::{color_field::ColorField, TemplateField},
-};
+use crate::template::{color_field::ColorField, TemplateField};
 use ramhorns::{encoding::Encoder, Content, Template};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
-pub use self::{base_index::BaseIndex, rgb_color::RgbColor};
+pub use self::{
+    base_index::BaseIndex,
+    rgb_color::{RgbColor, RgbColorFormatter},
+};
 
 mod base_index;
 mod rgb_color;
@@ -15,7 +15,8 @@ mod rgb_color;
 pub struct Scheme {
     pub scheme: String,
     pub author: String,
-    pub slug: Option<String>,
+    #[serde(skip)]
+    pub slug: String,
     #[serde(flatten)]
     pub colors: BTreeMap<BaseIndex, RgbColor>,
 }
@@ -25,12 +26,12 @@ impl Scheme {
         &self.scheme
     }
 
-    pub fn scheme_slug(&self) -> Option<&str> {
-        self.slug.as_ref().map(|x| x.as_str())
+    pub fn scheme_slug(&self) -> &str {
+        &self.slug
     }
 
     pub fn create_slug(mut self) -> Self {
-        self.slug = Some(create_slug(self.scheme_name()));
+        self.slug = create_slug(self.scheme_name());
         self
     }
 
@@ -39,11 +40,9 @@ impl Scheme {
     }
 
     pub fn color(&self, ColorField { number, format }: ColorField) -> Option<RgbColorFormatter> {
-        if let Some(&color) = self.colors.get(&BaseIndex(number)) {
-            Some(RgbColorFormatter { color, format })
-        } else {
-            None
-        }
+        self.colors
+            .get(&BaseIndex(number))
+            .map(|&color| RgbColorFormatter { color, format })
     }
 }
 
@@ -63,8 +62,10 @@ impl Content for Scheme {
     }
 
     fn capacity_hint(&self, _tpl: &Template) -> usize {
-        // TODO
-        0
+        self.scheme_name().len()
+            + self.scheme_author().len()
+            + self.scheme_slug().len()
+            + self.colors.len() * 6 // Amount of colors * ( 2 characters * 3 color components)
     }
 
     fn render_field_escaped<E: Encoder>(
@@ -78,13 +79,10 @@ impl Content for Scheme {
         match TemplateField::parse_field(name) {
             SchemeName => encoder.write_escaped(self.scheme_name()).map(|_| true),
             SchemeAuthor => encoder.write_escaped(self.scheme_author()).map(|_| true),
-            SchemeSlug => {
-                if let Some(slug) = self.scheme_slug() {
-                    encoder.write_escaped(slug).map(|_| true)
-                } else {
-                    encoder.write_escaped("scheme_slug").map(|_| true)
-                }
-            }
+            SchemeSlug => match self.scheme_slug() {
+                "" => encoder.write_escaped("scheme-slug").map(|_| true),
+                slug => encoder.write_escaped(slug).map(|_| true),
+            },
             ColorField(color_field) => match self.color(color_field) {
                 Some(value) => value.render_escaped(encoder).map(|_| true),
                 None => Ok(false),
@@ -109,14 +107,10 @@ impl Content for Scheme {
         match TemplateField::parse_field(name) {
             SchemeName => encoder.write_escaped(self.scheme_name()).map(|_| true),
             SchemeAuthor => encoder.write_escaped(self.scheme_author()).map(|_| true),
-            SchemeSlug => {
-                if let Some(slug) = self.scheme_slug() {
-                    encoder.write_escaped(slug).map(|_| true)
-                } else {
-                    encoder.write_escaped("scheme_slug").map(|_| true)
-                }
-            }
-
+            SchemeSlug => match self.scheme_slug() {
+                "" => encoder.write_escaped("scheme-slug").map(|_| true),
+                slug => encoder.write_escaped(slug).map(|_| true),
+            },
             ColorField(color_field) => match self.color(color_field) {
                 Some(value) => value.render_inverse(section, encoder).map(|_| true),
                 None => Ok(false),
