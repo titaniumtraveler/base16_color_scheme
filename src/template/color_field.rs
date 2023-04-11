@@ -47,10 +47,10 @@ fn parse_field(input: &str) -> IResult<&str, (u8, Format)> {
         alt((
             tag("hex")
                 .and(alt((
+                    tag("-bgr").map(|_| Hex::Bgr),
                     tag("-r").map(|_| Hex::R),
                     tag("-g").map(|_| Hex::G),
                     tag("-b").map(|_| Hex::B),
-                    tag("-bgr").map(|_| Hex::Bgr),
                     tag("").map(|_| Hex::Rgb),
                 )))
                 .map(|(_, hex)| Format::Hex(hex)),
