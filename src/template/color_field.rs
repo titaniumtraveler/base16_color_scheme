@@ -13,7 +13,7 @@ pub use self::format::{hsl::HslFormatter, Dec, Format, Hex, Hsl, Rgb};
 
 mod format;
 
-#[derive(Debug, Serialize, Deserialize, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 pub struct ColorField {
     pub number: u8,
     pub format: Format,

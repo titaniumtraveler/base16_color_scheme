@@ -2,7 +2,7 @@ use hex::FromHex;
 use serde::{de::Visitor, Deserialize, Serialize};
 use std::fmt::{self, Formatter};
 
-#[derive(Debug, Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct BaseIndex(pub u8);
 
 impl Serialize for BaseIndex {
