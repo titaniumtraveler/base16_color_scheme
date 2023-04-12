@@ -4,7 +4,7 @@ use std::fmt::{self, Formatter};
 
 /// type representing a base16 colorscheme key
 ///
-/// [`BaseIndex`] has a custom [`Serialize`](serde::Serialize)/[`Deserialze`](serde::Serialize) to
+/// [`BaseIndex`] has a custom [`Serialize`](serde::Serialize)/[`Deserialze`](serde::Deserialize) to
 /// turn `base07` to `BaseIndex(0x07)` and back.
 ///
 /// # Examples
