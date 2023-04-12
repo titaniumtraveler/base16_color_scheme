@@ -8,14 +8,14 @@ as template engine and therefore is fairly fast. \
 
 ## Getting Started
 
-To get started use you need to create a `Template` and a `Scheme`.
+To get started use you need to create a [`Template`](https://docs.rs/base16_color_scheme/0.3.1/base16_color_scheme/struct.Template.html) and a [`Scheme`](https://docs.rs/base16_color_scheme/0.3.1/base16_color_scheme/scheme/struct.Scheme.html).
 
-A `Template` can be created by just reading the template file and using
-`Template::new()`.
+A [`Template`](https://docs.rs/ramhorns/0.14.0/ramhorns/struct.Template.html) can be created by just reading the template file and using
+[`Template::new()`](https://docs.rs/ramhorns/0.14.0/ramhorns/struct.Template.html#method.new).
 
-A `Scheme` is often created by deserializing using `serde`.
+A [`Scheme`](https://docs.rs/base16_color_scheme/0.3.1/base16_color_scheme/scheme/struct.Scheme.html) is often created by deserializing using [`serde`](https://docs.rs/serde/latest/serde).
 
-Neither `Template` nor `Scheme` get modified by the rendering process,
+Neither [`Template`](https://docs.rs/ramhorns/0.14.0/ramhorns/struct.Template.html) nor [`Scheme`](https://docs.rs/base16_color_scheme/0.3.1/base16_color_scheme/scheme/struct.Scheme.html) get modified by the rendering process,
 which means both can be reused for efficiency.
 
 ```rust
@@ -35,7 +35,7 @@ template
 
 ## How it works
 
-Internally the crate works by implementing `ramhorns`'s `Content` trait.
+Internally the crate works by implementing [`ramhorns`](https://docs.rs/ramhorns/latest/ramhorns/index.html)'s [`Content`](https://docs.rs/ramhorns/0.14.0/ramhorns/trait.Content.html) trait.
 When the rendering process tries to look up a field, the field name gets
-parsed into a `TemplateField`. If it is a color, this color is fetched
-from the `Scheme` and formatted as specified by <https://github.com/chriskempson/base16/blob/main/builder.md#template-tags>.
+parsed into a [`TemplateField`](https://docs.rs/base16_color_scheme/0.3.1/base16_color_scheme/template/enum.TemplateField.html). If it is a color, this color is fetched
+from the [`Scheme`](https://docs.rs/base16_color_scheme/0.3.1/base16_color_scheme/scheme/struct.Scheme.html) and formatted as specified by <https://github.com/chriskempson/base16/blob/main/builder.md#template-tags>.
