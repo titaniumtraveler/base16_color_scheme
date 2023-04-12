@@ -2,7 +2,6 @@ use serde::{Deserialize, Serialize};
 
 pub mod hsl;
 
-#[non_exhaustive]
 #[derive(Debug, Serialize, Deserialize, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Format {
     Hex(Hex),
