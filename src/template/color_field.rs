@@ -13,6 +13,39 @@ pub use self::format::{hsl::HslFormatter, Dec, Format, Hex, Hsl, Rgb};
 
 mod format;
 
+/// this represents a field in the template containing a color description defined by the
+/// [specification](https://github.com/chriskempson/base16/blob/main/builder.md#template-tags)
+///
+/// Note that in contrast to the base16 spec this supports up to 256 colors. \
+/// (exactly what fits into a [`u8`])
+///
+/// This is used in combination with the [`Scheme`](crate::Scheme) to look up the specified color.\
+/// See [`Scheme::color()`](crate::Scheme::color)
+///
+/// # Examples
+///
+/// ```rust
+/// use base16_color_scheme::{
+///     scheme::{BaseIndex, RgbColor, RgbColorFormatter},
+///     template::color_field::{ColorField, Format, Hex},
+///     Scheme,
+/// };
+/// use std::collections::BTreeMap;
+///
+/// let color_field: ColorField = "base07-hex-r".parse().unwrap();
+/// let scheme = Scheme {
+///     colors: BTreeMap::from([(BaseIndex(0x07), RgbColor([0x7c, 0xaf, 0xc2]))]),
+///     ..Default::default()
+/// };
+///
+/// assert_eq!(
+///     scheme.color(color_field),
+///     Some(RgbColorFormatter {
+///         color: RgbColor([0x7c, 0xaf, 0xc2]),
+///         format: Format::Hex(Hex::R)
+///     })
+/// )
+/// ```
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 pub struct ColorField {
     pub number: u8,
@@ -80,5 +113,6 @@ fn parse_field(input: &str) -> IResult<&str, (u8, Format)> {
     Ok((input, (number, format)))
 }
 
+/// Error returned by [`ColorField::from_str`]
 #[derive(Debug, Default, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub struct ColorFieldError;
