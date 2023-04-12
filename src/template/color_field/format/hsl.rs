@@ -1,6 +1,9 @@
 use crate::scheme::RgbColor;
 use serde::{Deserialize, Serialize};
 
+/// this implements rgb to hls conversion
+///
+/// see [`RgbFormatter`](crate::scheme::RgbColorFormatter) for details
 #[derive(Debug, Serialize, Deserialize, Clone, Copy, PartialEq, PartialOrd)]
 pub struct HslFormatter {
     pub hue: f64,
