@@ -4,7 +4,7 @@ pub use formatter::RgbColorFormatter;
 
 mod formatter;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct RgbColor(pub [u8; 3]);
 
 impl Serialize for RgbColor {

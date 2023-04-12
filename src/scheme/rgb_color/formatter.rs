@@ -5,7 +5,7 @@ use crate::{
 use ramhorns::{encoding::Encoder, Content};
 use std::fmt::{self, Display, Formatter};
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct RgbColorFormatter {
     pub color: RgbColor,
     pub format: Format,

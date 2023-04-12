@@ -80,5 +80,5 @@ fn parse_field(input: &str) -> IResult<&str, (u8, Format)> {
     Ok((input, (number, format)))
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub struct ColorFieldError;
