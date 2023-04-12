@@ -5,6 +5,57 @@ use crate::{
 use ramhorns::{encoding::Encoder, Content};
 use std::fmt::{self, Display, Formatter};
 
+/// formatter that formats a color according to the [specification](https://github.com/chriskempson/base16/blob/main/builder.md#template-tags)
+///
+/// This formatter contains a color and a specifier in what format this color should be formatted.
+///
+/// # Example
+///
+/// ```rust
+/// # macro_rules! rgb_formatter_eq {
+/// #     ($color:expr, $format:expr, $expected:expr) => {
+/// #         assert_eq!(
+/// #             format!(
+/// #                 "{}",
+/// #                 RgbColorFormatter {
+/// #                     color: $color,
+/// #                     format: $format
+/// #                 }
+/// #             ),
+/// #             $expected
+/// #         );
+/// #     };
+/// #     ($color:expr, $($format:expr, $expected:expr);*;) => {
+/// #         $(rgb_formatter_eq!($color, $format, $expected);)*
+/// #     };
+/// # }
+/// #
+/// use base16_color_scheme::{
+///     scheme::{RgbColor, RgbColorFormatter},
+///     template::color_field::{Dec, Format, Hex, Hsl, Rgb},
+/// };
+///
+/// let color = RgbColor([0x7c, 0xaf, 0xc2]);
+///
+/// // This macro is used to test the result of format!("{}") in a much more readable fashion
+/// rgb_formatter_eq! {
+///     color,
+///     Format::Hex(Hex::Rgb), "7cafc2";
+///     Format::Hex(Hex::R),   "7c";
+///     Format::Hex(Hex::G),   "af";
+///     Format::Hex(Hex::B),   "c2";
+///     Format::Hex(Hex::Bgr), "c2af7c";
+///     Format::Rgb(Rgb::R),   "124";
+///     Format::Rgb(Rgb::G),   "175";
+///     Format::Rgb(Rgb::B),   "194";
+///     Format::Dec(Dec::R),   "0.49";
+///     Format::Dec(Dec::G),   "0.69";
+///     Format::Dec(Dec::B),   "0.76";
+///     Format::Hsl(Hsl::H),   "196.29";
+///     Format::Hsl(Hsl::S),   "0.36";
+///     Format::Hsl(Hsl::L),   "0.62";
+/// }
+/// ```
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct RgbColorFormatter {
     pub color: RgbColor,
