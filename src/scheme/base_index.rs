@@ -2,6 +2,25 @@ use hex::FromHex;
 use serde::{de::Visitor, Deserialize, Serialize};
 use std::fmt::{self, Formatter};
 
+/// type representing a base16 colorscheme key
+///
+/// [`BaseIndex`] has a custom [`Serialize`](serde::Serialize)/[`Deserialze`](serde::Serialize) to
+/// turn `base07` to `BaseIndex(0x07)` and back.
+///
+/// # Examples
+///
+/// ```rust
+/// use base16_color_scheme::scheme::{BaseIndex, RgbColor};
+/// use std::collections::BTreeMap;
+///
+/// let map: BTreeMap<BaseIndex, RgbColor> = serde_yaml::from_str("base07: 7cafc2").unwrap();
+/// assert_eq!(
+///     map,
+///     BTreeMap::from([(BaseIndex(0x07), RgbColor([0x7c, 0xaf, 0xc2]))])
+/// );
+/// ```
+///
+/// this is pretty much what happens in [`Scheme::colors`](crate::Scheme::colors).
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct BaseIndex(pub u8);
 
