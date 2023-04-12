@@ -3,12 +3,51 @@ use serde::{Deserialize, Serialize};
 
 pub mod color_field;
 
+/// type representing a field in the mustache template
+///
+/// see <https://github.com/chriskempson/base16/blob/main/builder.md#template-tags>
+///
+/// # Examples
+///
+/// ```rust
+/// use base16_color_scheme::template::{
+///     color_field::{ColorField, Format, Hex},
+///     TemplateField,
+/// };
+///
+/// assert_eq!(
+///     TemplateField::parse_field("scheme-name"),
+///     TemplateField::SchemeName
+/// );
+/// assert_eq!(
+///     TemplateField::parse_field("scheme-author"),
+///     TemplateField::SchemeAuthor
+/// );
+/// assert_eq!(
+///     TemplateField::parse_field("scheme-slug"),
+///     TemplateField::SchemeSlug
+/// );
+/// assert_eq!(
+///     TemplateField::parse_field("base07-hex-r"),
+///     TemplateField::ColorField(ColorField {
+///         number: 0x07,
+///         format: Format::Hex(Hex::R)
+///     })
+/// )
+/// ```
 #[derive(Debug, Serialize, Deserialize, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum TemplateField {
+    /// this variant is returned for `scheme-name` and `scheme`
     SchemeName,
+    /// this variant is returned for `scheme-author`
     SchemeAuthor,
+    /// this variant is returned for `scheme-slug`
     SchemeSlug,
+    /// this variant is returned for a color description
+    ///
+    /// see [`ColorField`](color_field::ColorField) and [`Format`](color_field::Format) for details
     ColorField(ColorField),
+    /// this variant is returned if the parsed string is invalid
     UnparsableField,
 }
 
