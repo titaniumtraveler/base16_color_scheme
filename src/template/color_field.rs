@@ -14,7 +14,7 @@ pub use self::format::{hsl::HslFormatter, Dec, Format, Hex, Hsl, Rgb};
 mod format;
 
 /// this represents a field in the template containing a color description defined by the
-/// [specification](https://github.com/chriskempson/base16/blob/main/builder.md#template-tags)
+/// [specification](https://github.com/tinted-themiung/home/blob/main/builder.md#template-variables)
 ///
 /// Note that in contrast to the base16 spec this supports up to 256 colors. \
 /// (exactly what fits into a [`u8`])
