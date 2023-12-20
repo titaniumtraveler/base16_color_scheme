@@ -55,7 +55,7 @@ mod rgb_color;
 /// Because `scheme-slug` is not created while deserialization it has to be inserted manually.
 /// Either by setting [`Scheme::slug`] manually, or using [`Scheme::create_slug`].
 ///
-/// When serializing Scheme it first serializes [`Scheme::scheme`] and [`Scheme::author`] then ignores [`Scheme::slug`] as per [specification](https://github.com/chriskempson/base16/blob/main/file.md#scheme-files)
+/// When serializing Scheme it first serializes [`Scheme::scheme`] and [`Scheme::author`] then ignores [`Scheme::slug`] as per [specification](https://github.com/tinted-theming/home/blob/main/builder.md#template-repository)
 /// and afterwards serializes all colors contained in [`Scheme::colors`] ordered by the field number.\
 /// (`base00`, `base01`, `base05` etc.)
 #[derive(Debug, Default, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
@@ -98,7 +98,7 @@ impl Scheme {
     }
 }
 
-/// create a slug from a scheme name based on the [specification](https://github.com/chriskempson/base16/blob/main/builder.md#template-tags).
+/// create a slug from a scheme name based on the [specification](https://github.com/tinted-theming/home/blob/main/builder.md#template-variables).
 ///
 /// # Example
 ///

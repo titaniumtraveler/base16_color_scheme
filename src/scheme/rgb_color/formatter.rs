@@ -5,7 +5,7 @@ use crate::{
 use ramhorns::{encoding::Encoder, Content};
 use std::fmt::{self, Display, Formatter};
 
-/// formatter that formats a color according to the [specification](https://github.com/chriskempson/base16/blob/main/builder.md#template-tags)
+/// formatter that formats a color according to the [specification](https://github.com/tinted-theming/home/blob/main/builder.md#template-variables)
 ///
 /// This formatter contains a color and a specifier in what format this color should be formatted.
 ///

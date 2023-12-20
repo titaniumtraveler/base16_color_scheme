@@ -5,7 +5,7 @@ pub mod color_field;
 
 /// type representing a field in the mustache template
 ///
-/// see <https://github.com/chriskempson/base16/blob/main/builder.md#template-tags>
+/// see <https://github.com/tinted-theming/home/main/builder.md#template-variables>
 ///
 /// # Examples
 ///
