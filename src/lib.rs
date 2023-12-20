@@ -1,6 +1,6 @@
 //! # base16_color_scheme
 //!
-//! A library to build [base16](https://github.com/tinted-theming/variables) colorschemes written in Rust.
+//! A library to build [base16](https://github.com/tinted-theming/home) colorschemes written in Rust.
 //!
 //! It uses [ramhorns](https://docs.rs/ramhorns/latest/ramhorns/index.html)
 //! as template engine and therefore is fairly fast. \
